@@ -1,0 +1,49 @@
+#include <cstdio>
+#include <iostream>
+using namespace std;
+char maze[105][105];
+int m,n,sum;
+
+void dfs(int i,int j)
+{
+    if(maze[i][j]!='@' || i<0 || j<0 || i>=m || j>=n)    //如果不可以通过，或越界，返回
+        return;
+    else
+    {
+        maze[i][j]='!';    //否则，向8个方向深搜。并且标记该点已通过，即下次不可行
+        dfs(i+1,j);
+        dfs(i-1,j);
+        dfs(i,j+1);
+        dfs(i,j-1);
+        dfs(i+1,j+1);
+        dfs(i+1,j-1);
+        dfs(i-1,j+1);
+        dfs(i-1,j-1);
+    }
+}
+
+int main()
+{
+    while(cin>>m>>n)
+    {
+        sum=0;
+        if(m==0||n==0)
+            break;
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++)
+            {
+                cin>>maze[i][j];    //开始用scanf("%c",&maze[i][j]); 会吞回车。
+            }
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++)
+            {
+                if(maze[i][j]=='@') //如果可以通过，dfs。dfs一遍后sum+1，即找到一块油田
+                {
+                    dfs(i,j);
+                    sum++;
+                }
+            }
+        cout<<sum<<endl;
+    }
+    return 0;
+}
